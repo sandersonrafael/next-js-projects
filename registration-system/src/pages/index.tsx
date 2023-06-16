@@ -7,6 +7,7 @@ import { useState } from "react";
 
 export default function Home() {
   const [visible, setVisible] = useState<"table" | "form">("table");
+  const [customer, setCustomer] = useState<Customer>(Customer.empty());
 
   const customers = [
     new Customer("Ana", 34, "1"),
@@ -16,7 +17,13 @@ export default function Home() {
   ];
 
   const selectedCustomer = (customer: Customer) => {
-    console.log(customer.name, "Editado");
+    setCustomer(customer);
+    setVisible("form");
+  };
+
+  const newCustomer = () => {
+    setCustomer(Customer.empty());
+    setVisible("form");
   };
 
   const deletedCustomer = (customer: Customer) => {
@@ -39,11 +46,7 @@ export default function Home() {
         {visible === "table" ? (
           <>
             <div className="flex justify-end">
-              <Button
-                className="mb-4"
-                color="green"
-                onClick={() => setVisible("form")}
-              >
+              <Button className="mb-4" color="green" onClick={newCustomer}>
                 Novo Cliente
               </Button>
             </div>
@@ -56,7 +59,7 @@ export default function Home() {
         ) : (
           <Form
             edit={saveCustomer}
-            customer={customers[1]}
+            customer={customer}
             cancel={() => setVisible("table")}
           ></Form>
         )}
