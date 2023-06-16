@@ -1,6 +1,23 @@
-import Layout from "@/components/Layout";
+import Layout from "../components/Layout";
+import Table from "../components/Table";
+import Customer from "../core/Customer";
 
 export default function Home() {
+  const customers = [
+    new Customer("Ana", 34, "1"),
+    new Customer("André", 24, "2"),
+    new Customer("Felipe", 22, "3"),
+    new Customer("Amanda", 25, "4"),
+  ];
+
+  const selectedCustomer = (customer: Customer) => {
+    console.log(customer.name, "Editado");
+  };
+
+  const deletedCustomer = (customer: Customer) => {
+    console.log(customer.name, "Excluído");
+  };
+
   return (
     <div
       className={`
@@ -10,7 +27,11 @@ export default function Home() {
     `}
     >
       <Layout titulo="Cadastro de Usuários">
-        <span>Conteúdo</span>
+        <Table
+          customers={customers}
+          selectedCustomer={selectedCustomer}
+          deletedCustomer={deletedCustomer}
+        ></Table>
       </Layout>
     </div>
   );

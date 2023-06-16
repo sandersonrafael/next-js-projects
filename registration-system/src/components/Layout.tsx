@@ -1,4 +1,4 @@
-import Titulo from "./Titulo";
+import Title from "./Title";
 
 interface LayoutProps {
   titulo: string;
@@ -14,7 +14,7 @@ export default function Layout(props: LayoutProps) {
       rounded-md
     `}
     >
-      <Titulo>{props.titulo}</Titulo>
+      <Title>{props.titulo}</Title>
       <div className="p-5">{props.children}</div>
     </div>
   );
