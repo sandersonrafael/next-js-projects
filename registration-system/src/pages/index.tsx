@@ -3,18 +3,26 @@ import Layout from "../components/Layout";
 import Table from "../components/Table";
 import Customer from "../core/Customer";
 import Form from "@/components/Form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import CustomerRepository from "@/core/CustomerRepository";
+import CustomerCollection from "@/firebase/db/CustomerCollection";
 
 export default function Home() {
+  const repo: CustomerRepository = new CustomerCollection();
+
   const [visible, setVisible] = useState<"table" | "form">("table");
   const [customer, setCustomer] = useState<Customer>(Customer.empty());
+  const [customers, setCustomers] = useState<Customer[]>([]);
 
-  const customers = [
-    new Customer("Ana", 34, "1"),
-    new Customer("André", 24, "2"),
-    new Customer("Felipe", 22, "3"),
-    new Customer("Amanda", 25, "4"),
-  ];
+  const getAll = () => {
+    repo.getAll().then((customers) => {
+      setCustomers(customers);
+      setVisible("table");
+    });
+  };
+
+  // eslint-disable-next-line
+  useEffect(getAll, []);
 
   const selectedCustomer = (customer: Customer) => {
     setCustomer(customer);
@@ -26,12 +34,14 @@ export default function Home() {
     setVisible("form");
   };
 
-  const deletedCustomer = (customer: Customer) => {
-    console.log(customer.name, "Excluído");
+  const saveCustomer = async (customer: Customer) => {
+    await repo.save(customer);
+    getAll();
   };
 
-  const saveCustomer = (customer: Customer) => {
-    console.log(customer);
+  const deletedCustomer = async (customer: Customer) => {
+    await repo.exclude(customer);
+    getAll();
   };
 
   return (
