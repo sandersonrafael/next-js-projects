@@ -9,6 +9,8 @@ if (!firebase.apps.length) {
   });
 }
 
-firebase.firestore().settings({ experimentalForceLongPolling: true });
+firebase
+  .firestore()
+  .settings({ experimentalForceLongPolling: true, merge: true });
 
 export default firebase;
